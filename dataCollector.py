@@ -25,6 +25,7 @@ def main():
         pprint(data)
         print(json_text)
 
+
 def makeData():
     if (verbose):
         print('Generating data...')
@@ -68,7 +69,7 @@ def saveToJsonFile(json_text):
 def postToDatabase(json_text):
     if (verbose):
         print('Trying to post to database...')
-    r = requests.post(databaseURL, headers = headers, data = json_text);
+    r = requests.post(databaseURL, headers=headers, data=json_text)
     if r.ok:
         print('Successfully posted to database')
     else:
