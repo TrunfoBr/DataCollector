@@ -1,0 +1,27 @@
+{
+  "_id": "f25a916a5a971d22928ebefba91bc5d5",
+  "_rev": "4-54d9ef582b2b2953bb595bae9269ea22",
+  "size": 2,
+  "politicians": [
+    {
+      "name": "Fulaninho - PHC",
+      "attributes": [
+        34,
+        23,
+        0,
+        12,
+        45
+      ]
+    },
+    {
+      "name": "Beltraninho - PHC",
+      "attributes": [
+        50,
+        10,
+        15,
+        32,
+        7
+      ]
+    }
+  ]
+}
