@@ -6,11 +6,14 @@ from random import randint
 databaseURL = 'https://8ddbdd99-b1ed-4834-98f5-254e9cb261df-bluemix' + \
               '.cloudant.com/politicos/'
 documentId = 'f25a916a5a971d22928ebefba91bc5d5'
-headers = {'Content-Type': 'application/json'}
+dbHeaders = {'Content-Type': 'application/json'}
 
-amountToGenerate = 100
+appToken = 'UmC2Xc1q3qjJ'
+
 verbose = True
-showOutput = False
+showOutput = True
+overwritedb = False
+amountToGenerate = 32
 attributeAmount = 5
 jsonFileName = 'dbFile.json'
 
@@ -20,61 +23,108 @@ def main():
     data = makeData()
     json_text = json.dumps(data)
     saveToJsonFile(json_text)
-    postToDatabase(json_text)
+    if overwritedb:
+        postToDatabase(json_text)
 
-    if (showOutput):
+    if showOutput:
         pprint(data)
-        print(json_text)
 
 
 def makeData():
-    if (verbose):
-        print('Generating data...')
+    log('Generating data...')
     data = {}
     data['_id'] = documentId
-    data['_rev'] = getDocumentRevision()
+    if overwritedb:
+        data['_rev'] = getDocumentRevision()
     data['size'] = amountToGenerate
     data['politicians'] = []
-    for i in range(0, amountToGenerate):
+    data['politicians'].append(processCandidate(1556321)) # Tiririca
+    data['politicians'].append(processCandidate(1536940)) # Aecio
+    data['politicians'].append(processCandidate(1549993)) # Marcelo Crivella
+    data['politicians'].append(processCandidate(1538644)) # Reguffe
+    data['politicians'].append(processCandidate(1540356)) # Ronaldo Caiado
+    data['politicians'].append(processCandidate(1553259)) # José Serra
+    data['politicians'].append(processCandidate(1547943)) # Romário
+    data['politicians'].append(processCandidate(1541067)) # Roberto Rocha
+    data['politicians'].append(processCandidate(1552319)) # Lasier Martins
+    data['politicians'].append(processCandidate(1538723)) # Izalci
+    completeDataWithRandomData(data)
+    log('Successfully generated data!')
+    return data
+
+
+def processCandidate(candidateId):
+    headers = {'Content-Type': 'application/json', 'App-Token':appToken}
+    url = 'http://api.transparencia.org.br:80/sandbox/v1/candidatos/' + str(candidateId)
+    r = requests.get(url, headers=headers)
+    if not r.ok:
+        print('Error on candidate ' + str(candidateId) + ': ' + r.text)
+        return None
+    else:
+        data = json.loads(r.text)
         politician = {}
-        politician['name'] = "politico #" + str(i)
+        politician['name'] = data['apelido'] + ' - ' + data['partido']
+        politician['attributes'] = processAttributes(candidateId)
+        return politician
+
+
+def processAttributes(candidateId):
+    headers = {'Content-Type': 'application/json', 'App-Token':appToken}
+    url = 'http://api.transparencia.org.br:80/sandbox/v1/candidatos/' + str(candidateId) + '/estatisticas'
+    r = requests.get(url, headers=headers)
+    if not r.ok:
+        print('Error on attributes of candidate ' + str(candidateId) + ': ' + r.text)
+        return None
+    else:
+        data = json.loads(r.text)
+        attributes = []
+        attributes.append(float(data[0]['faltasPlenario']))
+        attributes.append(float(data[0]['mediaPlenario']))
+        attributes.append(float(data[0]['evolucao']))
+        attributes.append(float(data[0]['emendas']))
+        attributes.append(float(data[0]['mediaEmendas']))
+        return attributes
+
+
+def completeDataWithRandomData(data):
+    for i in range(len(data['politicians']), amountToGenerate):
+        politician = {}
+        politician['name'] = "Político #" + str(i)
         politician['attributes'] = []
         for j in range(0, attributeAmount):
             politician['attributes'].append(randint(0, 100))
         data['politicians'].append(politician)
-    if (verbose):
-        print('Successfully generated data!')
-    return data
 
 
 def getDocumentRevision():
-    if (verbose):
-        print('Trying to get the document revision value...')
+    log('Trying to get the document revision value...')
     r = requests.get(databaseURL + documentId)
     data = json.loads(r.text)
-    if (verbose):
-        print('Revision value was obtained successfully!')
-        print(data['_rev'])
+    log('Revision value was obtained successfully!')
+    log(data['_rev'])
     return data['_rev']
 
 
 def saveToJsonFile(json_text):
-    if (verbose):
-        print('Saving json file locally...')
+    log('Saving json file locally...')
     with open(jsonFileName, 'w') as fileOut:
         fileOut.write(json_text)
-    if (verbose):
+    if verbose:
         print('Successfully saved the local json file!')
 
 
 def postToDatabase(json_text):
-    if (verbose):
-        print('Trying to post to database...')
-    r = requests.post(databaseURL, headers=headers, data=json_text)
+    log('Trying to post to database...')
+    r = requests.post(databaseURL, headers=dbHeaders, data=json_text)
     if r.ok:
         print('Successfully posted to database')
     else:
         print(r.text)
 
-if (__name__ == '__main__'):
+
+def log(msg):
+    if verbose:
+        print(msg)
+
+if __name__ == '__main__':
     main()
