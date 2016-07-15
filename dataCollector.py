@@ -3,7 +3,8 @@ import requests
 from pprint import pprint
 from random import randint
 
-databaseURL = 'https://8ddbdd99-b1ed-4834-98f5-254e9cb261df-bluemix.cloudant.com/politicos/'
+databaseURL = 'https://8ddbdd99-b1ed-4834-98f5-254e9cb261df-bluemix' + \
+              '.cloudant.com/politicos/'
 documentId = 'f25a916a5a971d22928ebefba91bc5d5'
 headers = {'Content-Type': 'application/json'}
 
