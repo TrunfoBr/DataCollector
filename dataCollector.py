@@ -12,7 +12,7 @@ appToken = 'UmC2Xc1q3qjJ'
 
 verbose = True
 showOutput = True
-overwritedb = False
+overwritedb = True
 amountToGenerate = 32
 attributeAmount = 5
 jsonFileName = 'dbFile.json'
@@ -48,6 +48,43 @@ def makeData():
     data['politicians'].append(processCandidate(1541067)) # Roberto Rocha
     data['politicians'].append(processCandidate(1552319)) # Lasier Martins
     data['politicians'].append(processCandidate(1538723)) # Izalci
+    data['politicians'].append(processCandidate(1537726)) # Fraga
+    data['politicians'].append(processCandidate(1538344)) # ÉRIKA KOKAY
+    data['politicians'].append(processCandidate(1538030)) # Rogerio Rosso
+    data['politicians'].append(processCandidate(1538630)) # Ronaldo Fonseca
+    data['politicians'].append(processCandidate(1536938)) # Aloisio Ferreira
+    data['politicians'].append(processCandidate(1554099)) # Andres Sanchez
+    data['politicians'].append(processCandidate(1553846)) # Antonio Bulhoes
+    data['politicians'].append(processCandidate(1556235)) # Arlindo Chinaglia
+    data['politicians'].append(processCandidate(1556459)) # Arnaldo Faria
+    data['politicians'].append(processCandidate(1556265)) # Beto Mansur
+    data['politicians'].append(processCandidate(1555985)) # Bruna Furlan
+    data['politicians'].append(processCandidate(1555562)) # Carlos Sampaio
+    data['politicians'].append(processCandidate(1555980)) # Celso Russomano
+    data['politicians'].append(processCandidate(1555458)) # Dr Sinval Medeiros
+    data['politicians'].append(processCandidate(1554826)) # Duarte Nogueira
+    data['politicians'].append(processCandidate(1547943)) # Romario
+    data['politicians'].append(processCandidate(1546673)) # Alvaro Dias
+    data['politicians'].append(processCandidate(1546851)) # Alex
+    data['politicians'].append(processCandidate(1547071)) # Assis do Couto
+    data['politicians'].append(processCandidate(1546920)) # Cristiane
+    data['politicians'].append(processCandidate(1550012)) # Jean Willis
+    data['politicians'].append(processCandidate(1548184)) # Jair Bolsonaro
+    # data['politicians'].append(processCandidate(1546260)) # DELEGADO FRANCISCHINI
+    # data['politicians'].append(processCandidate(1546680)) # DIRCEL
+    # data['politicians'].append(processCandidate(1546261)) # GIACOBO
+    # data['politicians'].append(processCandidate(1546575)) # HERMES FRANGÃO PARCIANELLO"
+    # data['politicians'].append(processCandidate(1546933)) # JOAO ARRUDA
+    # data['politicians'].append(processCandidate(1537300)) # Eunicio
+    # data['politicians'].append(processCandidate(1537281)) # Taisso
+    # data['politicians'].append(processCandidate(1537282)) # Andre Figueiredo
+    # data['politicians'].append(processCandidate(1537437)) # Danilo Forte
+    # data['politicians'].append(processCandidate(1537147)) # Domingos Neto
+    # data['politicians'].append(processCandidate(1537295)) # Genecias Noronha
+
+
+
+
     completeDataWithRandomData(data)
     log('Successfully generated data!')
     return data
